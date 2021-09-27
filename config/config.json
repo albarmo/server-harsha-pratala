@@ -2,7 +2,7 @@
   "development": {
     "username": "albarms",
     "password": "123456",
-    "database": "db_harsha",
+    "database": "HarshaPratala",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

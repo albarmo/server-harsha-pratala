@@ -1,11 +1,12 @@
-const { Anggota } = require("../models");
+const { User } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { generateAccessToken } = require("../helpers/jwt");
+const { hashPassword } = require("../helpers/bcrypt");
 
 class UserController {
   // get all user data
   static async getAllUser(req, res) {
-    let data = await Anggota.findAll();
+    let data = await User.findAll();
     try {
       if (data) {
         return res.status(200).json({ data });
@@ -19,16 +20,16 @@ class UserController {
 
   static async register(req, res) {
     let inputDataRegister = {
-      firsname: req.body.firstname,
-      lastname: req.body.lastname,
+      firsName: req.body.firsName,
+      lastName: req.body.lastName,
       email: req.body.email,
       phone: req.body.phone,
       address: req.body.address,
-      no_anggota: req.body.no_anggota,
+      clubId: req.body.clubId,
+      role: req.body.role,
       password: req.body.password,
-      type: req.body.type,
     };
-    Anggota.create(inputDataRegister, {})
+    User.create(inputDataRegister, {})
       .then((data) => {
         return res.status(201).json({ data });
       })
@@ -42,16 +43,24 @@ class UserController {
       email: req.body.email,
       password: req.body.password,
     };
-    const user = await Anggota.findOne({
+
+    const user = await User.findOne({
       where: { email: inputLogin.email },
     });
+
+    const userId = user?.dataValues?.id;
+
+    console.log(inputLogin, "ini input login");
+    console.log(user.dataValues.password, "ini user");
 
     try {
       if (!user) {
         return res
           .status(400)
           .json({ message: "failed, user not registered..." });
-      } else if (!comparePassword(inputLogin.password, user.password)) {
+      } else if (
+        !comparePassword(inputLogin.password, user.dataValues.password)
+      ) {
         return res.status(401).json({ msg: "email or password wrong!" });
       } else {
         const accessToken = generateAccessToken({
@@ -59,7 +68,7 @@ class UserController {
           password: user.password,
           no_anggota: user.no_anggota,
         });
-        return res.status(200).json({ accessToken, ...user });
+        return res.status(200).json({ accessToken, userId });
       }
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -67,21 +76,20 @@ class UserController {
   }
 
   static async updateUser(req, res) {
-    //
     const idUser = req.params.id;
     const inputDataUpdate = {
-      firsname: req.body.firstname,
-      lastname: req.body.lastname,
+      firsName: req.body.firsName,
+      lastName: req.body.lastName,
       email: req.body.email,
       phone: req.body.phone,
       address: req.body.address,
-      no_anggota: req.body.no_anggota,
-      password: req.body.password,
-      type: req.body.type,
+      clubId: req.body.clubId,
+      role: req.body.role,
+      password: hashPassword(req.body.password),
     };
 
     try {
-      const userDataById = await Anggota.findOne({
+      const userDataById = await User.findOne({
         where: {
           id: idUser,
         },
@@ -90,26 +98,30 @@ class UserController {
       });
 
       if (userDataById) {
-        const updateUser = await Anggota.update(inputDataUpdate, {
+        const updateUser = await User.update(inputDataUpdate, {
           where: {
             id: idUser,
           },
+          returning: true,
         });
         if (updateUser) {
-          return res.status(200).json({ data: updateUser });
+          return res.status(200).json({ updateUser });
         }
       } else if (!userDataById) {
         res.status(404).json({ msg: "user not found!" });
       }
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message, error });
     }
   }
 
   static async deleteUser(req, res) {
     const idUser = req.params.id;
     try {
-      const deleteUser = await Anggota.destroy({ where: { id: idUser } });
+      const deleteUser = await User.destroy({
+        where: { id: idUser },
+        returning: true,
+      });
       if (deleteUser) {
         return res
           .status(200)

@@ -1,10 +1,10 @@
-const { Articles } = require("../models");
+const { Vegetasi } = require("../models");
 const uploader = require("../helpers/uploader");
 
-class ArticleController {
+class VegetasiController {
   static async list(req, res) {
     try {
-      const data = await Articles.findAll();
+      const data = await Vegetasi.findAll();
       if (data) {
         return res.status(200).json({ data });
       }
@@ -15,27 +15,25 @@ class ArticleController {
 
   static create(req, res) {
     try {
-      const upload = uploader("ARTICLE_IMAGE").fields([{ name: "image" }]);
+      const upload = uploader("VEGETASI_PDF").fields([{ name: "image" }]);
       upload(req, res, (err) => {
         if (err) {
           console.log("gagal upload", err);
           return res.status(500).json({ msg: err });
         }
+
         const { image } = req.files;
-        const imagePath = image ? "/" + image[0].filename : null;
+        const filePath = image ? "/" + image[0].filename : null;
 
         let inputData = {
           title: req.body.title,
           description: req.body.description,
-          image: imagePath,
+          file: filePath,
           content: req.body.content,
-          topics: req.body.topics,
-          tags: req.body.tags,
-          date: new Date(),
-          authors: req.body.authors,
-          status: req.body.status,
+          releaseDate: req.body.releaseDate,
         };
-        Articles.create(inputData)
+
+        Vegetasi.create(inputData)
           .then((data) => {
             console.log(data);
             return res.status(201).json({ data });
@@ -51,31 +49,30 @@ class ArticleController {
 
   static update(req, res) {
     try {
-      const idArticle = req.params.id;
-      const upload = uploader("ARTICLE_IMAGE").fields([{ name: "image" }]);
+      const idVegetasi = req.params.id;
+      const upload = uploader("VEGETASI_PDF").fields([{ name: "image" }]);
       upload(req, res, (err) => {
         if (err) {
           console.log("gagal upload", err);
           return res.status(500).json({ msg: err });
         }
+
         const { image } = req.files;
-        const imagePath = image ? "/" + image[0].filename : null;
+        const filePath = image ? "/" + image[0].filename : null;
 
         let inputDataUpdate = {
           title: req.body.title,
           description: req.body.description,
-          image: imagePath,
+          file: filePath,
           content: req.body.content,
-          topics: req.body.topics,
-          tags: req.body.tags,
-          date: new Date(),
-          authors: req.body.authors,
-          status: req.body.status,
+          releaseDate: req.body.releaseDate,
         };
-        Articles.update(inputDataUpdate, {
+
+        Vegetasi.update(inputDataUpdate, {
           where: {
-            id: idArticle,
+            id: idVegetasi,
           },
+          returning: true,
         })
           .then((data) => {
             console.log(data);
@@ -91,22 +88,22 @@ class ArticleController {
   }
 
   static async delete(req, res) {
-    const idArticle = req.params.id;
-    const article = await Articles.findOne({ where: { id: idArticle } });
+    const idVegetasi = req.params.id;
+    const vegetasi = await Vegetasi.findOne({ where: { id: idVegetasi } });
     try {
-      if (!article) {
-        return res.status(404).json({ message: "article data not found!" });
+      if (!vegetasi) {
+        return res.status(404).json({ message: "vegetasi data not found!" });
       } else {
-        const deleteArticle = await Articles.destroy({
+        const deleteVegetasi = await Vegetasi.destroy({
           where: {
-            id: idArticle,
+            id: idVegetasi,
           },
           returning: true,
           plain: true,
         });
         return res
           .status(200)
-          .json({ msg: `sucess deleted article ${idArticle}` });
+          .json({ msg: `sucess deleted vegetasi ${idVegetasi}` });
       }
     } catch (error) {
       return res.status(500).json({ message: error });
@@ -114,4 +111,4 @@ class ArticleController {
   }
 }
 
-module.exports = ArticleController;
+module.exports = VegetasiController;

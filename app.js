@@ -3,7 +3,6 @@ const app = express();
 const port = 3000;
 const cors = require("cors");
 const routes = require("./routes/index");
-const path = require("path");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: "false" }));
