@@ -34,6 +34,7 @@ class ArticleController {
           date: new Date(),
           authors: req.body.authors,
           status: req.body.status,
+          fileIds: req.body.fileIds,
         };
         Articles.create(inputData)
           .then((data) => {
@@ -71,6 +72,7 @@ class ArticleController {
           date: new Date(),
           authors: req.body.authors,
           status: req.body.status,
+          fileIds: req.body.fileIds,
         };
         Articles.update(inputDataUpdate, {
           where: {

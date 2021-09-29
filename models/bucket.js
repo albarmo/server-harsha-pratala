@@ -1,10 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
-
 const { v4: uuidv4 } = require("uuid");
-
 module.exports = (sequelize, DataTypes) => {
-  class Articles extends Model {
+  class Bucket extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,18 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Articles.init(
+  Bucket.init(
     {
       title: DataTypes.STRING,
-      description: DataTypes.STRING,
-      image: DataTypes.STRING,
-      content: DataTypes.STRING,
-      topics: DataTypes.STRING,
-      tags: DataTypes.STRING,
-      date: DataTypes.DATE,
-      authors: DataTypes.STRING,
-      status: DataTypes.STRING,
-      fileIds: DataTypes.STRING,
+      file: DataTypes.STRING,
     },
     {
       hooks: {
@@ -34,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       sequelize,
-      modelName: "Articles",
+      modelName: "Bucket",
     }
   );
-  return Articles;
+  return Bucket;
 };
