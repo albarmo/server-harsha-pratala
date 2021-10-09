@@ -2,7 +2,7 @@
   "development": {
     "username": "albarms",
     "password": "123456",
-    "database": "HarshaPratala",
+    "database": "server-harsha-pratala",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

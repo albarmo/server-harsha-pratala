@@ -1,9 +1,9 @@
-const { Topic } = require("../models");
+const { Topic, Articles } = require("../models");
 
 class TopicsControllers {
   static async list(req, res) {
     try {
-      const data = await Topic.findAll();
+      const data = await Topic.findAll({ include: { model: Articles } });
       if (data) {
         return res.status(200).json({ data });
       }

@@ -5,13 +5,20 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = (sequelize, DataTypes) => {
   class Articles extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
+      Articles.belongsTo(models.User, {
+        targetKey: "id",
+        foreignKey: "authors",
+      });
+      Articles.hasMany(models.Tag, {
+        targetKey: "id",
+        foreignKey: "articleId",
+      });
+      Articles.hasOne(models.Topic, {
+        targetKey: "id",
+        foreignKey: "articleId",
+      });
     }
   }
   Articles.init(
@@ -20,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       image: DataTypes.STRING,
       content: DataTypes.STRING,
-      topics: DataTypes.STRING,
-      tags: DataTypes.STRING,
+      topics: DataTypes.UUID,
+      tags: DataTypes.UUID,
       date: DataTypes.DATE,
-      authors: DataTypes.STRING,
+      authors: DataTypes.UUID,
       status: DataTypes.STRING,
-      fileIds: DataTypes.STRING,
+      fileIds: DataTypes.UUID,
     },
     {
       hooks: {

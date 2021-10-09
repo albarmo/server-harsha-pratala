@@ -1,9 +1,10 @@
-const { Tag } = require("../models");
+const { Tag, Articles } = require("../models");
+const articles = require("../models/articles");
 
 class TagsController {
   static async list(req, res) {
     try {
-      const data = await Tag.findAll();
+      const data = await Tag.findAll({ include: { model: Articles } });
       if (data) {
         return res.status(200).json({ data });
       }
@@ -16,6 +17,7 @@ class TagsController {
     try {
       let inputData = {
         name: req.body.name,
+        articleId: req.body.articleId,
       };
       const newTag = await Tag.create(inputData);
       if (!newTag) {
@@ -33,6 +35,7 @@ class TagsController {
       const tagId = req.params.id;
       let inputDataUpdate = {
         name: req.body.name,
+        articleId: req.body.articleId,
       };
       const updateTag = await Tag.update(inputDataUpdate, {
         where: {

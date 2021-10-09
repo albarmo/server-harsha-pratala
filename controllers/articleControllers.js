@@ -1,10 +1,21 @@
-const { Articles } = require("../models");
+const { Articles, Tag, Topic, User, Bucket } = require("../models");
 const uploader = require("../helpers/uploader");
 
 class ArticleController {
   static async list(req, res) {
     try {
-      const data = await Articles.findAll();
+      const data = await Articles.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["email", "id"],
+          },
+          {
+            model: Tag,
+            attributes: ["id", "name"],
+          },
+        ],
+      });
       if (data) {
         return res.status(200).json({ data });
       }

@@ -23,23 +23,23 @@ module.exports = {
       },
       topics: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
       },
       tags: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
       },
       date: {
         type: Sequelize.DATE,
       },
       authors: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
       },
       status: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      fileIds: { type: Sequelize.STRING },
+      fileIds: { type: Sequelize.UUID },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
