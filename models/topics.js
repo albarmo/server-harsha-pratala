@@ -3,15 +3,15 @@ const { Model } = require('sequelize')
 const { v4: uuidv4 } = require('uuid')
 
 module.exports = (sequelize, DataTypes) => {
-  class Tag extends Model {
+  class Topic extends Model {
     static associate(models) {
-      Tag.hasMany(models.Articles, {
+      Topic.hasMany(models.Articles, {
         sourceKey: 'id',
-        foreignKey: 'tag_id',
+        foreignKey: 'topic_id',
       })
     }
   }
-  Tag.init(
+  Topic.init(
     {
       name: DataTypes.STRING,
     },
@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       sequelize,
-      modelName: 'Tag',
+      modelName: 'Topic',
     },
   )
-  return Tag
+  return Topic
 }

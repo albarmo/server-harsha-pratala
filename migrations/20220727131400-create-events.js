@@ -1,51 +1,44 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Events', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      first_name: {
-        allowNull: false,
+      is_public: {
+        type: Sequelize.BOOLEAN,
+      },
+      status: {
         type: Sequelize.STRING,
       },
-      last_name: {
-        allowNull: false,
+      title: {
         type: Sequelize.STRING,
       },
-      gender: {
+      description: {
         type: Sequelize.STRING,
       },
-      birth_date: {
+      content: {
         type: Sequelize.STRING,
       },
-      member_id: {
-        allowNull: false,
+      tumbnail: {
         type: Sequelize.STRING,
       },
-      email: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING,
+      price: {
+        type: Sequelize.INTEGER,
       },
-      phone: {
-        type: Sequelize.STRING,
+      event_date: {
+        type: Sequelize.DATE,
       },
-      address: {
-        type: Sequelize.STRING,
+      registration_open_date: {
+        type: Sequelize.DATE,
       },
-      is_admin: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      quota: {
+        type: Sequelize.INTEGER,
       },
-      profile_picture: {
-        type: Sequelize.STRING,
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      publisher_id: {
+        type: Sequelize.UUID,
       },
       createdAt: {
         allowNull: false,
@@ -58,6 +51,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users')
+    await queryInterface.dropTable('Events')
   },
 }

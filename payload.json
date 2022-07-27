@@ -1,0 +1,30 @@
+// {
+//   "id": "06e8ae84-3a99-45cc-a662-e558c3ba9f9b",
+//   "first_name": "Publikasi",
+//   "last_name": "Admin",
+//   "gender": "Male",
+//   "birth_date": "2015-03-25",
+//   "member_id": "Publikasi",
+//   "email": "publikasi@hp.com",
+//   "phone": "087885711434",
+//   "address": "Sekretariat Harsha Pratala",
+//   "is_admin": true,
+//   "profile_picture": null,
+//   "password": "123456",
+//   "createdAt": "2015-03-25",
+//   "updatedAt": "2015-03-25"
+// }
+
+// {
+//   "is_public": DataTypes.BOOLEAN,
+//   "status": DataTypes.STRING,
+//   "type": DataTypes.STRING,
+//   "title": DataTypes.STRING,
+//   "description": DataTypes.STRING,
+//   "content": DataTypes.STRING,
+//   "tumbnail": DataTypes.STRING,
+//   "topic_id": DataTypes.UUID,
+//   "tag_id": DataTypes.UUID,
+//   "attachments": DataTypes.UUID,
+//   "publisher_id": DataTypes.UUID
+// }

@@ -1,21 +1,21 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Recruitments', {
+    await queryInterface.createTable('Events_Participants', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      nim: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      event_id: {
+        type: Sequelize.UUID,
       },
       first_name: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       last_name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       email: {
@@ -24,50 +24,21 @@ module.exports = {
         type: Sequelize.STRING,
       },
       phone: {
-        allowNull: false,
         type: Sequelize.STRING,
-      },
-      address: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      gender: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      birth_date: {
-        allowNull: false,
-        type: Sequelize.DATE,
       },
       profile_picture: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      profile_description: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      faculty: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      year_of_college: {
-        allowNull: false,
         type: Sequelize.STRING,
       },
       registration_id: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
       },
       registration_date: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      medical_history: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      reason_to_join: {
+      proof_of_payment: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -81,6 +52,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Recruitments')
+    await queryInterface.dropTable('Events_Participants')
   },
 }

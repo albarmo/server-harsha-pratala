@@ -1,45 +1,52 @@
-"use strict";
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Articles", {
+    await queryInterface.createTable('Articles', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
+      },
+      is_public: {
+        type: Sequelize.BOOLEAN,
+      },
+      status: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       title: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       description: {
-        type: Sequelize.STRING,
-      },
-      image: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       content: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      topics: {
-        allowNull: false,
-        type: Sequelize.UUID,
-      },
-      tags: {
-        type: Sequelize.UUID,
-      },
-      date: {
-        type: Sequelize.DATE,
-      },
-      authors: {
-        allowNull: false,
-        type: Sequelize.UUID,
-      },
-      status: {
-        allowNull: false,
+      tumbnail: {
         type: Sequelize.STRING,
       },
-      fileIds: { type: Sequelize.UUID },
+      topic_id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+      },
+      tag_id: {
+        type: Sequelize.UUID,
+      },
+      attachments: {
+        type: Sequelize.UUID,
+      },
+      publisher_id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -48,9 +55,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Articles");
+    await queryInterface.dropTable('Articles')
   },
-};
+}

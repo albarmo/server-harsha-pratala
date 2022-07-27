@@ -1,29 +1,30 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Topics', {
+    await queryInterface.createTable('Storages', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      name: {
+      file: {
         type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
       },
-
+      type: {
+        type: Sequelize.STRING,
+      },
+      title: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
       },
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Topics')
+    await queryInterface.dropTable('Storages')
   },
 }
