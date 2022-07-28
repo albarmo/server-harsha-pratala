@@ -3,17 +3,20 @@ const { Model } = require('sequelize')
 const { v4: uuidv4 } = require('uuid')
 
 module.exports = (sequelize, DataTypes) => {
-  class Tag extends Model {
+  class Storage extends Model {
     static associate(models) {
-      Tag.hasMany(models.Articles, {
-        sourceKey: 'id',
-        foreignKey: 'tag_id',
+      Storage.belongsToMany(models.Articles, {
+        as: 'ArticleInStorage',
+        through: models.Bucket,
+        foreignKey: 'StorageId',
       })
     }
   }
-  Tag.init(
+  Storage.init(
     {
-      name: DataTypes.STRING,
+      file: DataTypes.STRING,
+      type: DataTypes.STRING,
+      title: DataTypes.STRING,
     },
     {
       hooks: {
@@ -22,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       sequelize,
-      modelName: 'Tag',
+      modelName: 'Storage',
     },
   )
-  return Tag
+  return Storage
 }

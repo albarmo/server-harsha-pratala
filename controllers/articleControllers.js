@@ -1,5 +1,5 @@
-const { Articles, Tag, Topic, User, Bucket } = require("../models");
-const uploader = require("../helpers/uploader");
+const { Articles, Tag, Topic, User, Bucket } = require('../models')
+const uploader = require('../helpers/uploader')
 
 class ArticleController {
   static async list(req, res) {
@@ -8,123 +8,130 @@ class ArticleController {
         include: [
           {
             model: User,
-            attributes: ["email", "id"],
+            attributes: ['id'],
           },
           {
             model: Tag,
-            attributes: ["id", "name"],
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Topic,
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Bucket,
           },
         ],
-      });
+      })
       if (data) {
-        return res.status(200).json({ data });
+        return res.status(200).json({ data })
       }
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message })
     }
   }
 
   static create(req, res) {
     try {
-      const upload = uploader("ARTICLE_IMAGE").fields([{ name: "image" }]);
+      const upload = uploader('ARTICLE_IMAGE').fields([{ name: 'tumbnail' }])
       upload(req, res, (err) => {
         if (err) {
-          console.log("gagal upload", err);
-          return res.status(500).json({ msg: err });
+          return res.status(500).json({ msg: err })
         }
-        const { image } = req.files;
-        const imagePath = image ? "/" + image[0].filename : null;
+        const { tumbnail } = req.files
+        const imagePath = tumbnail ? '/' + tumbnail[0].filename : null
 
         let inputData = {
+          is_public: req.body.is_public,
+          status: req.body.status,
+          type: req.body.type,
           title: req.body.title,
           description: req.body.description,
-          image: imagePath,
           content: req.body.content,
-          topics: req.body.topics,
-          tags: req.body.tags,
-          date: new Date(),
-          authors: req.body.authors,
-          status: req.body.status,
-          fileIds: req.body.fileIds,
-        };
+          tumbnail: imagePath,
+          topic_id: req.body.topic_id,
+          tag_id: req.body.tag_id,
+          attachments: req.body.attachments,
+          publisher_id: req.body.publisher_id,
+        }
         Articles.create(inputData)
           .then((data) => {
-            console.log(data);
-            return res.status(201).json({ data });
+            return res.status(201).json({ data })
           })
           .catch((error) => {
-            return res.status(500).json({ message: error });
-          });
-      });
+            return res.status(500).json({ message: error })
+          })
+      })
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message })
     }
   }
 
   static update(req, res) {
     try {
-      const idArticle = req.params.id;
-      const upload = uploader("ARTICLE_IMAGE").fields([{ name: "image" }]);
+      const idArticle = req.params.id
+      const upload = uploader('ARTICLE_IMAGE').fields([{ name: 'tumbnail' }])
       upload(req, res, (err) => {
         if (err) {
-          console.log("gagal upload", err);
-          return res.status(500).json({ msg: err });
+          return res.status(500).json({ msg: err })
         }
-        const { image } = req.files;
-        const imagePath = image ? "/" + image[0].filename : null;
+        const { tumbnail } = req.files
+        const imagePath = tumbnail ? '/' + tumbnail[0].filename : null
 
         let inputDataUpdate = {
+          is_public: req.body.is_public,
+          status: req.body.status,
+          type: req.body.type,
           title: req.body.title,
           description: req.body.description,
-          image: imagePath,
           content: req.body.content,
-          topics: req.body.topics,
-          tags: req.body.tags,
-          date: new Date(),
-          authors: req.body.authors,
-          status: req.body.status,
-          fileIds: req.body.fileIds,
-        };
+          tumbnail: imagePath,
+          topic_id: req.body.topic_id,
+          tag_id: req.body.tag_id,
+          attachments: req.body.attachments,
+          publisher_id: req.body.publisher_id,
+        }
         Articles.update(inputDataUpdate, {
-          where: {
-            id: idArticle,
-          },
-        })
-          .then((data) => {
-            console.log(data);
-            return res.status(201).json({ data });
-          })
-          .catch((error) => {
-            return res.status(500).json({ message: error });
-          });
-      });
-    } catch (error) {
-      return res.status(500).json({ message: error });
-    }
-  }
-
-  static async delete(req, res) {
-    const idArticle = req.params.id;
-    const article = await Articles.findOne({ where: { id: idArticle } });
-    try {
-      if (!article) {
-        return res.status(404).json({ message: "article data not found!" });
-      } else {
-        const deleteArticle = await Articles.destroy({
           where: {
             id: idArticle,
           },
           returning: true,
           plain: true,
-        });
+        })
+          .then((data) => {
+            return res.status(201).json({ result: data[1] })
+          })
+          .catch((error) => {
+            return res.status(500).json({ message: error })
+          })
+      })
+    } catch (error) {
+      return res.status(500).json({ message: error })
+    }
+  }
+
+  static async delete(req, res) {
+    const idArticle = req.params.id
+    const article = await Articles.findOne({ where: { id: idArticle } })
+    try {
+      if (!article) {
+        return res.status(404).json({ message: 'article data not found!' })
+      } else {
+        const response = await Articles.destroy({
+          where: {
+            id: idArticle,
+          },
+          returning: true,
+          plain: true,
+        })
         return res
           .status(200)
-          .json({ msg: `sucess deleted article ${idArticle}` });
+          .json({ msg: `sucess deleted article ${idArticle}`, response })
       }
     } catch (error) {
-      return res.status(500).json({ message: error });
+      return res.status(500).json({ message: error })
     }
   }
 }
 
-module.exports = ArticleController;
+module.exports = ArticleController
