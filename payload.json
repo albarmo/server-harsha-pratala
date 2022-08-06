@@ -16,15 +16,60 @@
 // }
 
 // {
-//   "is_public": DataTypes.BOOLEAN,
-//   "status": DataTypes.STRING,
-//   "type": DataTypes.STRING,
-//   "title": DataTypes.STRING,
-//   "description": DataTypes.STRING,
-//   "content": DataTypes.STRING,
-//   "tumbnail": DataTypes.STRING,
-//   "topic_id": DataTypes.UUID,
-//   "tag_id": DataTypes.UUID,
-//   "attachments": DataTypes.UUID,
-//   "publisher_id": DataTypes.UUID
+//   "is_public": "",
+//   "status": "",
+//   "type": "",
+//   "title": "",
+//   "description": "",
+//   "content": "",
+//   "tumbnail": "",
+//   "topic_id": "",
+//   "tag_id": "",
+//   "attachments": "",
+//   "publisher_id": ""
 // }
+
+// {
+//   "nim": "16107002",
+//   "first_name": "Albar",
+//   "last_name": "Moerhamsa",
+//   "email": "moerhamsa@gmail.com",
+//   "phone": "081280709980",
+//   "address": "Jalan H Mandor 12A",
+//   "gender": "Male",
+//   "birth_date": "2017-01-26",
+//   "profile_picture": "test",
+//   "profile_description": "test profile description",
+//   "faculty": "Teknik Informatika",
+//   "year_of_college": "2016",
+//   "registration_id": "Albar_16107002_TIF_2016_28102022",
+//   "registration_date": "2017-01-26",
+//   "medical_history": "alhamdulilah sehat",
+//   "reason_to_join": "mau ke everest"
+// }
+
+// {
+//   "is_public": true,
+//   "status": "Published",
+//   "title": "Event Test 1",
+//   "description": "tes description",
+//   "content": "tes content",
+//   "tumbnail": "tes",
+//   "price": "200000",
+//   "event_date": "2017-01-26",
+//   "registration_open_date": "2017-01-26",
+//   "quota": "200",
+//   "publisher_id": "06e8ae84-3a99-45cc-a662-e558c3ba9f9b"
+// }
+
+{
+  "event_id": "0621cf08-b4dc-405c-a900-16675c06776e",
+  "first_name": "Albar",
+  "last_name": "Moerhamsa",
+  "email": "moerhamsa@gmail.com",
+  "phone": "081280709980",
+  "profile_picture": "tes",
+  "registration_id": "tes",
+  "registration_date": "2017-01-26",
+  "proof_of_payment": "image_upload"
+}

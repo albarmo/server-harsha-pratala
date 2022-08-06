@@ -17,7 +17,7 @@ module.exports = {
         },
         onDelete: 'cascade',
         onUpdate: 'cascade',
-        unique: 'unique-storage-per-product-1',
+        unique: 'unique-storage-per-article-1',
       },
       StorageId: {
         type: Sequelize.UUID,
@@ -28,7 +28,7 @@ module.exports = {
         },
         onDelete: 'cascade',
         onUpdate: 'cascade',
-        unique: 'unique-storage-per-product-2',
+        unique: 'unique-storage-per-article-2',
       },
       createdAt: {
         type: Sequelize.DATE,

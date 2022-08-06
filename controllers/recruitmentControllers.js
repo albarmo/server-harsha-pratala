@@ -15,6 +15,7 @@ class RecruitmentsControllers {
   static async create(req, res) {
     try {
       const {
+        nim,
         first_name,
         last_name,
         email,
@@ -33,6 +34,7 @@ class RecruitmentsControllers {
 
       const newRecruitment = await Recruitment.create(
         {
+          nim,
           first_name,
           last_name,
           email,
@@ -64,6 +66,7 @@ class RecruitmentsControllers {
     try {
       const recruitmentId = req.params.id
       const {
+        nim,
         first_name,
         last_name,
         email,
@@ -83,6 +86,7 @@ class RecruitmentsControllers {
 
       const updateRecruitment = await Recruitment.update(
         {
+          nim,
           first_name,
           last_name,
           email,

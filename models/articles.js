@@ -1,5 +1,5 @@
 'use strict'
-const { Model, Topic } = require('sequelize')
+const { Model } = require('sequelize')
 const { v4: uuidv4 } = require('uuid')
 
 module.exports = (sequelize, DataTypes) => {
@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       tumbnail: DataTypes.STRING,
       topic_id: DataTypes.UUID,
       tag_id: DataTypes.UUID,
-      attachments: DataTypes.UUID,
       publisher_id: DataTypes.UUID,
     },
     {

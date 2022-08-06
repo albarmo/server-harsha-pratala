@@ -1,10 +1,12 @@
-const bucketRouter = require("express").Router();
-const bucketController = require("../controllers/bucketControllers");
+const bucketRouter = require('express').Router()
+const BucketController = require('../controllers/bucketControllers')
+const { authorization, authentification } = require('../middleware/Auth')
 
-bucketRouter.get("/", bucketController.getAllFile);
-bucketRouter.get("/files", bucketController.getlistFile);
-bucketRouter.get("/:id", bucketController.getFileById);
-bucketRouter.post("/", bucketController.upload);
-bucketRouter.delete("/:id", bucketController.delete);
+bucketRouter.use(authentification)
+bucketRouter.use(authorization)
+bucketRouter.get('/', BucketController.list)
+bucketRouter.post('/assign', BucketController.createBucket)
+bucketRouter.get('/:id', BucketController.detail)
+bucketRouter.delete('/:id', BucketController.delete)
 
-module.exports = bucketRouter;
+module.exports = bucketRouter

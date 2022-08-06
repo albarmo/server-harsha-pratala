@@ -1,27 +1,13 @@
-const { Articles, Tag, Topic, User, Bucket, Storage } = require('../models')
+const { Events, Events_Participants } = require('../models')
 const uploader = require('../helpers/uploader')
 
-class ArticleController {
+class EventController {
   static async list(req, res) {
     try {
-      const data = await Articles.findAll({
+      const data = await Events.findAll({
         include: [
           {
-            model: User,
-            attributes: ['id'],
-          },
-          {
-            model: Tag,
-            attributes: ['id', 'name'],
-          },
-          {
-            model: Topic,
-            attributes: ['id', 'name'],
-          },
-          {
-            model: Storage,
-            as: 'StorageForArticle',
-            attributes: ['id', 'file', 'type', 'title'],
+            model: Events_Participants,
           },
         ],
       })
@@ -46,16 +32,17 @@ class ArticleController {
         let inputData = {
           is_public: req.body.is_public,
           status: req.body.status,
-          type: req.body.type,
           title: req.body.title,
           description: req.body.description,
           content: req.body.content,
           tumbnail: imagePath,
-          topic_id: req.body.topic_id,
-          tag_id: req.body.tag_id,
+          price: req.body.price,
+          event_date: req.body.event_date,
+          registration_open_date: req.body.registration_open_date,
+          quota: req.body.quota,
           publisher_id: req.body.publisher_id,
         }
-        Articles.create(inputData)
+        Events.create(inputData)
           .then((data) => {
             return res.status(201).json({ data })
           })
@@ -70,7 +57,7 @@ class ArticleController {
 
   static update(req, res) {
     try {
-      const idArticle = req.params.id
+      const idEvent = req.params.id
       const upload = uploader('ARTICLE_IMAGE').fields([{ name: 'tumbnail' }])
       upload(req, res, (err) => {
         if (err) {
@@ -82,18 +69,19 @@ class ArticleController {
         let inputDataUpdate = {
           is_public: req.body.is_public,
           status: req.body.status,
-          type: req.body.type,
           title: req.body.title,
           description: req.body.description,
           content: req.body.content,
           tumbnail: imagePath,
-          topic_id: req.body.topic_id,
-          tag_id: req.body.tag_id,
+          price: req.body.price,
+          event_date: req.body.event_date,
+          registration_open_date: req.body.registration_open_date,
+          quota: req.body.quota,
           publisher_id: req.body.publisher_id,
         }
-        Articles.update(inputDataUpdate, {
+        Events.update(inputDataUpdate, {
           where: {
-            id: idArticle,
+            id: idEvent,
           },
           returning: true,
           plain: true,
@@ -111,22 +99,22 @@ class ArticleController {
   }
 
   static async delete(req, res) {
-    const idArticle = req.params.id
-    const article = await Articles.findOne({ where: { id: idArticle } })
+    const idEvent = req.params.id
+    const event = await Events.findOne({ where: { id: idEvent } })
     try {
-      if (!article) {
-        return res.status(404).json({ message: 'article data not found!' })
+      if (!event) {
+        return res.status(404).json({ message: 'event data not found!' })
       } else {
-        const response = await Articles.destroy({
+        const response = await Events.destroy({
           where: {
-            id: idArticle,
+            id: idEvent,
           },
           returning: true,
           plain: true,
         })
         return res
           .status(200)
-          .json({ msg: `sucess deleted article ${idArticle}`, response })
+          .json({ msg: `sucess deleted event ${idEvent}`, response })
       }
     } catch (error) {
       return res.status(500).json({ message: error })
@@ -134,4 +122,4 @@ class ArticleController {
   }
 }
 
-module.exports = ArticleController
+module.exports = EventController

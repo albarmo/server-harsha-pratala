@@ -40,9 +40,6 @@ module.exports = {
       tag_id: {
         type: Sequelize.UUID,
       },
-      attachments: {
-        type: Sequelize.UUID,
-      },
       publisher_id: {
         allowNull: false,
         type: Sequelize.UUID,
