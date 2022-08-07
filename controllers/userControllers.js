@@ -57,6 +57,7 @@ class UserController {
         return res.status(401).json({ msg: 'email or password wrong!' })
       } else {
         const access_token = generateAccessToken({
+          id: user.id,
           email: user.email,
           password: user.password,
           no_anggota: user.member_id,
