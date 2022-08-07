@@ -1,7 +1,6 @@
-const { User, Articles } = require('../models')
+const { User } = require('../models')
 const { comparePassword } = require('../helpers/bcrypt')
 const { generateAccessToken } = require('../helpers/jwt')
-const { hashPassword } = require('../helpers/bcrypt')
 
 class UserController {
   static async getAllUser(req, res) {

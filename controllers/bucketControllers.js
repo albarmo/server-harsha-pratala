@@ -1,103 +1,77 @@
-const { Bucket, Articles } = require('../models')
-const uploader = require('../helpers/uploader')
+const { Bucket } = require('../models')
 
 class BucketController {
-  static async getAllFile(req, res) {
+  static async list(req, res, next) {
     try {
-      const file = await Bucket.findAll({})
-      if (!file) {
-        return res.status(404).json({ message: 'Bucket empty!' })
-      } else {
-        return res.status(200).json({ file })
-      }
-    } catch (error) {
-      return res.status(500).json({ message: error })
-    }
-  }
-
-  static async getFileById(req, res) {
-    const id = req.params.id
-    try {
-      const file = await Bucket.findOne({ where: { id: id } })
-      if (!file) {
-        return res.status(404).json({ message: 'File not found!' })
-      } else {
-        return res.status(200).json({ file })
-      }
-    } catch (error) {
-      return res.status(500).json({ message: error.message })
-    }
-  }
-
-  static async getlistFile(req, res) {
-    let inputData = {
-      fileId: req.body.fileId,
-    }
-
-    try {
-      const files = await Bucket.findAll({ where: { id: inputData.fileId } })
-      if (files) {
-        return res.status(200).json({ files })
-      } else if (!file) {
-        return res.status(404).json({ message: 'File not found!' })
-      }
-    } catch (error) {
-      return res.status(500).json({ message: error })
-    }
-  }
-
-  static async upload(req, res) {
-    try {
-      const upload = uploader('FILE_').fields([{ name: 'file' }])
-      upload(req, res, async (err) => {
-        if (err) {
-          console.log('gagal upload', err)
-          return res.status(500).json({ msg: err })
-        }
-
-        const { file } = req.files
-        const filePath = file ? '/' + file[0].filename : null
-
-        let inputData = {
-          title: req.body.title,
-          file: filePath,
-          source_id: req.body.source_id,
-        }
-
-        if (filePath) {
-          await Bucket.create(inputData)
-            .then((data) => {
-              return res.status(201).json({ data })
-            })
-            .catch((error) => {
-              return res.status(500).json({ message: error })
-            })
-        }
+      const data = await Bucket.findAll({
+        attributes: ['id', 'SourceId', 'StorageId'],
       })
+      if (data) {
+        return res.status(200).json(data)
+      }
     } catch (error) {
-      return res.status(500).json({ message: error.message })
+      next(error)
     }
   }
 
-  static async delete(req, res) {
-    const id = req.params.id
-    const file = await Bucket.findOne({ where: { id: id } })
-
+  static async detail(req, res, next) {
+    const { id } = req.params
     try {
-      if (!file) {
-        return res.status(404).json({ message: 'file data not found!' })
+      const data = await Bucket.findOne({
+        attributes: ['id', 'SourceId', 'StorageId'],
+        where: {
+          id: id,
+        },
+      })
+      if (data) {
+        return res.status(200).json(data)
       } else {
-        await Bucket.destroy({
+        return res.status(404).json({ message: 'file not exist' })
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async delete(req, res, next) {
+    const idBucket = req.params.id
+    const bucket = await Bucket.findOne({ where: { id: idBucket } })
+    try {
+      if (!bucket) {
+        return res.status(404).json({ message: 'bucket data not found!' })
+      } else {
+        const deleteBucket = await Bucket.destroy({
           where: {
-            id: idArticle,
+            id: idBucket,
           },
           returning: true,
-          plain: true,
         })
-        return res.status(200).json({ msg: `sucess deleted file ${idArticle}` })
+        if (deleteBucket) {
+          return res
+            .status(200)
+            .json({ msg: `sucess deleted file ${idBucket}` })
+        }
       }
     } catch (error) {
-      return res.status(500).json({ message: error })
+      next(error)
+    }
+  }
+
+  static async createBucket(req, res, next) {
+    const data = {
+      SourceId: req.body.SourceId,
+      StorageId: req.body.StorageId,
+    }
+
+    try {
+      const assignBucket = await Bucket.create({ ...data })
+      if (assignBucket) {
+        return res.status(201).json({
+          data,
+        })
+      }
+    } catch (error) {
+      next(error)
     }
   }
 }

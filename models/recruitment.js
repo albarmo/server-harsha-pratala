@@ -27,12 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       reason_to_join: DataTypes.STRING,
     },
     {
-      hooks: {
-        beforeCreate(instance) {
-          instance.id = uuidv4()
-          instance.registration_id = `${instance.first_name}_${instance.faculty}_${instance.nim}`
-        },
-      },
       sequelize,
       modelName: 'Recruitment',
     },

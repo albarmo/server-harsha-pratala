@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       Bucket.belongsTo(models.Articles, {
         foreignKey: 'SourceId',
         targetKey: 'id',
-        as: 'Articles',
+        as: 'Article',
       })
       Bucket.belongsTo(models.Storage, {
         foreignKey: 'StorageId',

@@ -6,6 +6,9 @@ const topicsRouter = require('./topicsRouter')
 const feedbackRouter = require('./feedbackRouter')
 const recruitmentRouter = require('./recruitmentsRouter')
 const bucketRouter = require('./bucketRouter')
+const storageRouter = require('./storageRouter')
+const eventRouter = require('./eventRouter')
+const eventParticipantRouter = require('./eventParticipantRouter')
 
 router.use('/user', userRouter)
 router.use('/article', articleRouter)
@@ -14,5 +17,8 @@ router.use('/topics', topicsRouter)
 router.use('/feedback', feedbackRouter)
 router.use('/recruitment', recruitmentRouter)
 router.use('/buckets', bucketRouter)
+router.use('/storage', storageRouter)
+router.use('/events', eventRouter)
+router.use('/event-participant', eventParticipantRouter)
 
 module.exports = router
