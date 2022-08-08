@@ -1,6 +1,5 @@
 const { Storage, Product, Bucket } = require('../models')
 const uploader = require('../helpers/uploader')
-const { v4: uuidv4 } = require('uuid')
 
 class StorageController {
   static async list(req, res, next) {
@@ -39,29 +38,29 @@ class StorageController {
 
   static upload(req, res, next) {
     try {
-      const upload = uploader('STORAGE_IMAGE').fields([{ name: 'file' }])
-      upload(req, res, (err) => {
-        if (err) {
-          return res.status(500).json({ msg: err })
-        }
-        const { file } = req.files
-        const imagePath = file ? '/' + file[0].filename : null
-        const type = file ? '/' + file[0].mimetype : null
+      // const upload = uploader('STORAGE_IMAGE').fields([{ name: 'file' }])
+      // upload(req, res, (err) => {
+      //   if (err) {
+      //     return res.status(500).json({ msg: err })
+      //   }
+      //   const { file } = req.files
+      //   const imagePath = file ? '/' + file[0].filename : null
+      //   const type = file ? '/' + file[0].mimetype : null
 
-        let uploadData = {
-          file: imagePath,
-          type: type,
-          title: file[0].originalname.split('.')[0],
-        }
+      let uploadData = {
+        file: req.body.file,
+        type: type,
+        title: req.body.title,
+      }
 
-        Storage.create(uploadData)
-          .then((data) => {
-            return res.status(201).json({ data })
-          })
-          .catch((error) => {
-            return res.status(500).json({ message: error })
-          })
-      })
+      Storage.create(uploadData)
+        .then((data) => {
+          return res.status(201).json({ data })
+        })
+        .catch((error) => {
+          return res.status(500).json({ message: error })
+        })
+      // })
     } catch (error) {
       next(error)
     }
@@ -70,32 +69,32 @@ class StorageController {
   static update(req, res, next) {
     try {
       const idStorage = req.params.id
-      const upload = uploader('STORAGE_IMAGE').fields([{ name: 'file' }])
-      upload(req, res, (err) => {
-        if (err) {
-          return res.status(500).json({ msg: err })
-        }
-        const { file } = req.files
-        const imagePath = file ? '/' + file[0].filename : null
+      // const upload = uploader('STORAGE_IMAGE').fields([{ name: 'file' }])
+      // upload(req, res, (err) => {
+      //   if (err) {
+      //     return res.status(500).json({ msg: err })
+      //   }
+      //   const { file } = req.files
+      //   const imagePath = file ? '/' + file[0].filename : null
 
-        let updatedData = {
-          file: imagePath,
-          type: req.body.type,
-        }
+      let updatedData = {
+        file: req.body.file,
+        type: req.body.type,
+      }
 
-        Storage.update(updatedData, {
-          where: {
-            id: idStorage,
-          },
-          returning: true,
-        })
-          .then((data) => {
-            return res.status(200).json({ data })
-          })
-          .catch((error) => {
-            return res.status(500).json({ message: error })
-          })
+      Storage.update(updatedData, {
+        where: {
+          id: idStorage,
+        },
+        returning: true,
       })
+        .then((data) => {
+          return res.status(200).json({ data })
+        })
+        .catch((error) => {
+          return res.status(500).json({ message: error })
+        })
+      // })
     } catch (error) {
       next(error)
     }

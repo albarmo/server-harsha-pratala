@@ -13,10 +13,8 @@ function authentification(req, res, next) {
 }
 
 function authorization(req, res, next) {
-  console.log({ userdata: req.userData })
   User.findByPk(req.userData.id)
     .then((user) => {
-      console.log({ user })
       if (user.is_admin) {
         next()
       } else {
