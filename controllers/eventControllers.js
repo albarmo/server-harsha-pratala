@@ -3,7 +3,7 @@ const sequelize = require('sequelize')
 
 class EventController {
   static async list(req, res) {
-    const { is_public, status, title } = req.query
+    const { is_public, status, title, limit } = req.query
     const params = {}
     if (is_public) {
       params['is_public'] = is_public
@@ -21,6 +21,8 @@ class EventController {
 
     try {
       const data = await Events.findAll({
+        limit: limit,
+        order: [['createdAt', 'DESC']],
         where: {
           ...params,
         },
@@ -29,6 +31,19 @@ class EventController {
             model: Events_Participants,
           },
         ],
+      })
+      if (data) {
+        return res.status(200).json({ data })
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+  static async detail(req, res) {
+    const id = req.params.id
+    try {
+      const data = await Events.findOne({
+        where: { id: id },
       })
       if (data) {
         return res.status(200).json({ data })

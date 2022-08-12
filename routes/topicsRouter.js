@@ -3,6 +3,7 @@ const topicsController = require('../controllers/topicControllers')
 const { authorization, authentification } = require('../middleware/Auth')
 
 topicsRouter.get('/', topicsController.list)
+topicsRouter.get('/:id', topicsController.detail)
 topicsRouter.use(authentification)
 topicsRouter.use(authorization)
 topicsRouter.post('/', topicsController.create)
