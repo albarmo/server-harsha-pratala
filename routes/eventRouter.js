@@ -3,6 +3,7 @@ const eventController = require('../controllers/eventControllers')
 const { authorization, authentification } = require('../middleware/Auth')
 
 eventRouter.get('/', eventController.list)
+eventRouter.get('/:id', eventController.detail)
 eventRouter.use(authentification)
 eventRouter.use(authorization)
 eventRouter.post('/', eventController.create)

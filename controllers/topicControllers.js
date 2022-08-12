@@ -12,6 +12,20 @@ class TopicsControllers {
     }
   }
 
+  static async detail(req, res) {
+    const id = req.params.id
+    try {
+      const data = await Topic.findOne({
+        where: { id: id },
+      })
+      if (data) {
+        return res.status(200).json({ data })
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+
   static async create(req, res) {
     try {
       let inputData = {

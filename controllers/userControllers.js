@@ -1,18 +1,55 @@
 const { User } = require('../models')
 const { comparePassword } = require('../helpers/bcrypt')
 const { generateAccessToken } = require('../helpers/jwt')
+const sequelize = require('sequelize')
 
 class UserController {
   static async getAllUser(req, res) {
-    let data = await User.findAll({})
+    const { is_admin, member_id, first_name, last_name } = req.query
+    const params = {}
+    if (is_admin) {
+      params['is_admin'] = is_admin
+    }
+    if (member_id) {
+      params['member_id'] = member_id
+    }
+    if (first_name) {
+      params['first_name'] = sequelize.where(
+        sequelize.fn('LOWER', sequelize.col('first_name')),
+        'LIKE',
+        '%' + first_name.toLowerCase() + '%',
+      )
+    }
+    if (last_name) {
+      params['last_name'] = sequelize.where(
+        sequelize.fn('LOWER', sequelize.col('last_name')),
+        'LIKE',
+        '%' + last_name.toLowerCase() + '%',
+      )
+    }
     try {
+      const data = await User.findAll({
+        where: { ...params },
+      })
       if (data) {
         return res.status(200).json({ data })
-      } else {
-        return res.status(500).json({ message: 'user table empty' })
       }
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      return res.status(500).json({ message: error.message })
+    }
+  }
+
+  static async detail(req, res) {
+    const idArticle = req.params.id
+    try {
+      const data = await User.findOne({
+        where: { id: idArticle },
+      })
+      if (data) {
+        return res.status(200).json({ data })
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error.message })
     }
   }
 

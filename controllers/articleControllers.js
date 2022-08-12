@@ -3,8 +3,15 @@ const sequelize = require('sequelize')
 
 class ArticleController {
   static async list(req, res) {
-    const { is_public, status, type, topic_id, tag_id, title } = req.query
-
+    const {
+      is_public,
+      status,
+      type,
+      topic_id,
+      tag_id,
+      title,
+      limit,
+    } = req.query
     const params = {}
     if (is_public) {
       params['is_public'] = is_public
@@ -28,9 +35,10 @@ class ArticleController {
         '%' + title.toLowerCase() + '%',
       )
     }
-
     try {
       const data = await Articles.findAll({
+        limit: limit,
+        order: [['createdAt', 'DESC']],
         where: { ...params },
         include: [
           {

@@ -3,6 +3,7 @@ const userController = require('../controllers/userControllers')
 const { authorization, authentification } = require('../middleware/Auth')
 
 userRouter.get('/', userController.getAllUser)
+userRouter.get('/:id', userController.detail)
 userRouter.post('/register', userController.register)
 userRouter.post('/login', userController.login)
 userRouter.use(authentification)

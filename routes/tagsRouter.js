@@ -3,6 +3,7 @@ const tagsController = require('../controllers/tagControllers')
 const { authorization, authentification } = require('../middleware/Auth')
 
 tagsRouter.get('/', tagsController.list)
+tagsRouter.get('/:id', tagsController.detail)
 tagsRouter.use(authentification)
 tagsRouter.use(authorization)
 tagsRouter.post('/', tagsController.create)
