@@ -8,7 +8,7 @@ module.exports = {
         type: Sequelize.UUID,
       },
       file: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999),
       },
       type: {
         type: Sequelize.STRING,

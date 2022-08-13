@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       profile_picture: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999),
       },
       password: {
         allowNull: false,

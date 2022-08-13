@@ -14,11 +14,11 @@ module.exports = {
       },
       description: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(999),
       },
       content: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(99999),
       },
       tumbnail: {
         allowNull: false,
