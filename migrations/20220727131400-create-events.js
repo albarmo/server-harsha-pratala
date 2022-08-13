@@ -20,10 +20,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999999),
       },
       tumbnail: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(999),
+        length: 999,
       },
       price: {
         type: Sequelize.INTEGER,

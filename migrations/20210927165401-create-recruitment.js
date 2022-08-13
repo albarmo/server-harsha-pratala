@@ -41,11 +41,12 @@ module.exports = {
       },
       profile_picture: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999),
       },
       profile_description: {
         allowNull: false,
         type: Sequelize.STRING,
+        length: 9999,
       },
       faculty: {
         allowNull: false,
@@ -65,10 +66,10 @@ module.exports = {
       },
       medical_history: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999),
       },
       reason_to_join: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(9999),
       },
       createdAt: {
         allowNull: false,
