@@ -106,6 +106,36 @@ class UserController {
     }
   }
 
+  static async loginWithMemberId(req, res) {
+    const inputLogin = {
+      member_id: req.body.member_id,
+      password: req.body.password,
+    }
+    const user = await User.findOne({
+      where: { member_id: inputLogin.member_id },
+    })
+
+    try {
+      if (!user) {
+        return res.status(400).json({ message: 'failed, user not member...' })
+      } else if (
+        !comparePassword(inputLogin.password, user.dataValues.password)
+      ) {
+        return res.status(401).json({ msg: 'email or password wrong!' })
+      } else {
+        const access_token = generateAccessToken({
+          id: user.id,
+          email: user.email,
+          password: user.password,
+          no_anggota: user.member_id,
+        })
+        return res.status(200).json({ access_token })
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+
   static async updateUser(req, res) {
     const idUser = req.params.id
     const inputDataUpdate = {
